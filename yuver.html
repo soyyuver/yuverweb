@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aplicación con retraso falso</title>
+  <meta name="description" content="Simula retrasos en la red con la aplicación Fake Lag sin root." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1020; /* page background behind cards */
+      --primary:#1a73e8;
+      --primary-2:#2d9cf0;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#475569;
+      --ring: rgba(26,115,232,.25);
+      --shadow: 0 8px 24px rgba(2, 12, 27, 0.12);
+      --radius: 18px;
+    }@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#050814;
+    --card:#0b1225;
+    --text:#e5edff;
+    --muted:#9fb2d9;
+    --shadow: 0 8px 30px rgba(5, 8, 20, 0.6);
+  }
+}
+
+* { box-sizing: border-box; }
+html,body{ height:100%; }
+body{
+  margin:0; font-family:'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; 
+  color:var(--text); background:linear-gradient(180deg,#0d1b3d 0%, #0b1020 60%, #0b1020 100%);
+  background-attachment: fixed;
+}
+
+/* Header (hero) */
+.hero{
+  position:relative; overflow:hidden; padding:64px 16px 28px; border-bottom-left-radius:28px; border-bottom-right-radius:28px;
+  background: radial-gradient(1200px 400px at 80% -10%, rgba(45,156,240,.35), rgba(45,156,240,0)),
+              radial-gradient(900px 300px at -20% -30%, rgba(49,130,206,.5), rgba(49,130,206,0)),
+              linear-gradient(160deg, #1677ff 0%, #1a5fe5 40%, #163cb2 100%);
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,.12);
+}
+.hero .container{ max-width:980px; margin:0 auto; }
+.navbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.brand{ display:flex; align-items:center; gap:10px; color:white; text-decoration:none; font-weight:700; letter-spacing: .2px; }
+.logo{ width:36px; height:36px; border-radius:12px; background:rgba(255,255,255,.18); display:grid; place-items:center; backdrop-filter: blur(6px); }
+.logo svg{ width:22px; height:22px; }
+
+.cta-top{
+  display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:999px; background:rgba(255,255,255,.16); color:#fff; text-decoration:none; font-weight:600;
+  border: 1px solid rgba(255,255,255,.2);
+}
+
+h1{ font-size: clamp(26px, 4vw, 40px); line-height:1.15; margin:28px 0 8px; color:#fff; }
+.subtitle{ color:rgba(255,255,255,.92); max-width:600px; font-size:clamp(14px,2.4vw,18px); }
+
+.primary-btn{ display:inline-block; margin-top:18px; padding:14px 22px; border-radius:14px; background:#fff; color:#0b1225; font-weight:700; text-decoration:none; box-shadow: var(--shadow);
+  transition: transform .08s ease, box-shadow .2s ease; }
+.primary-btn:focus{ outline: 4px solid var(--ring); outline-offset: 2px; }
+.primary-btn:hover{ transform: translateY(-1px); }
+
+/* Sections */
+.section{ padding:20px 16px; }
+.stack{ max-width:980px; margin: 18px auto; display:grid; gap:18px; }
+
+.card{ background:var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding:18px; }
+.card h2{ margin:0 0 8px; font-size:22px; }
+.card p{ margin:0 0 14px; color:var(--muted); }
+
+/* Changelog */
+.changelog{ list-style:none; margin:0; padding:0; }
+.changelog li{ display:flex; gap:10px; padding:10px 0; border-bottom:1px dashed rgba(148,163,184,.35); }
+.changelog li:last-child{ border-bottom:none; }
+.dot{ width:8px; height:8px; border-radius:50%; flex:0 0 8px; margin-top:10px; background:linear-gradient(180deg,var(--primary),var(--primary-2)); box-shadow:0 4px 10px rgba(26,115,232,.45);} 
+.entry{ flex:1; }
+.entry .ver{ font-weight:700; }
+.entry .desc{ color:var(--muted); }
+
+/* Footer */
+footer{ padding:40px 16px 80px; color:#cdd7f6; text-align:center; opacity:.9; }
+footer a{ color:inherit; }
+
+/* Layout tweaks */
+@media (min-width: 720px){
+  .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap:18px; }
+}
+
+  </style>
+</head>
+<body>
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container">
+      <nav class="navbar" aria-label="Principal">
+        <a class="brand" href="#top">
+          <span class="logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12c0-3.866 3.134-7 7-7a7 7 0 0 1 6.708 5.05" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M19 12c0 3.866-3.134 7-7 7A7 7 0 0 1 5.292 13.95" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="1.7" fill="white"/>
+            </svg>
+          </span>
+          Fake Lag
+        </a>
+        <a class="cta-top" href="#descarga">Descargar</a>
+      </nav><h1>Aplicación con<br/> retraso falso</h1>
+  <p class="subtitle">Simular retrasos en la red con la aplicación <strong>Fake Lag</strong> sin root. Crea una conexión lenta o totalmente falsa para tus pruebas.</p>
+  <a id="descarga" class="primary-btn" href="#" download>Descargar ahora</a>
+</div>
+
+  </header>  <!-- CONTENT SECTIONS -->  <main class="section">
+    <div class="stack"><div class="grid-2">
+    <section class="card" aria-labelledby="title-descargar">
+      <h2 id="title-descargar">Descargar la aplicación</h2>
+      <p>Haga clic en el botón a continuación para descargar la última versión de <strong>Fake Lag</strong>:</p>
+      <a class="primary-btn" href="#" download>Descargar ahora</a>
+    </section>
+
+    <section class="card" aria-labelledby="title-acerca">
+      <h2 id="title-acerca">Acerca de</h2>
+      <p><strong>Fake Lag</strong> es una aplicación de Android que te permite crear una conexión lenta o falsa para depurar, probar y simular condiciones de red adversas.</p>
+    </section>
+  </div>
+
+  <section class="card" aria-labelledby="title-cambios">
+    <h2 id="title-cambios">Registro de cambios</h2>
+    <ul class="changelog">
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v1.0</div>
+          <div class="desc">Corrección de errores en algunos dispositivos.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v1.2</div>
+          <div class="desc">Se agregaron nuevas funciones y se corrigieron errores.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v1.3</div>
+          <div class="desc">Se corrigió un error que no se pudo instalar en algunos dispositivos y se agregó tiempo.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v1.4</div>
+          <div class="desc">Cambios de tema y actualizaciones de código.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v1.5</div>
+          <div class="desc">Actualizaciones de código y adición de descargador para Android 15.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v1.6</div>
+          <div class="desc">Se agregó la función de bloqueo de posición del ícono.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v1.7</div>
+          <div class="desc">Se agregó la función de retraso automático.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v1.8</div>
+          <div class="desc">Se corrigió el retraso automático al cancelar y se agregó un ícono transparente.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v1.9</div>
+          <div class="desc">Actualización del código fuente.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v2.0</div>
+          <div class="desc">Actualización de la versión.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v2.1</div>
+          <div class="desc">Corrección de errores y no se puede abrir.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v2.2</div>
+          <div class="desc">Se agregó sonido al hacer clic.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v2.3</div>
+          <div class="desc">Se agregó bypass.</div>
+        </div>
+      </li>
+      <li>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="entry">
+          <div class="ver">v2.4</div>
+          <div class="desc">Se agregó una función de sonido y mejoras generales.</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+</div>
+
+  </main>  <footer>
+    Hecho con ❤ para tu proyecto. © <span id="y"></span>
+  </footer>  <script>
+    // año automático en el footer
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script></body>
+</html>
